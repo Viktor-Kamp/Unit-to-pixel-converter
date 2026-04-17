@@ -1,0 +1,14 @@
+schema_version = "1.0.0"
+
+id = "unit_to_pixel_converter"
+version = "1.0.0"
+name = "Unit to pixel converter"
+tagline = "Calculates render resolution from different units"
+type = "add-on"
+tags = ["Render"]
+
+blender_version_min = "4.2.0"
+license = ["SPDX:GPL-3.0-or-later"]
+
+maintainer = "Viktor Kamp"
+website = "https://viktorkamp.de"
