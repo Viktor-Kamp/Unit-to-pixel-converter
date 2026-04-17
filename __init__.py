@@ -90,30 +90,11 @@ classes = (
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-
-    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(
-        name="Unit",
-        items=get_unit_items(),
-        default='MM'
-    )
-
-    bpy.types.Scene.unit_width = bpy.props.FloatProperty(
-        name="Width",
-        default=210.0,
-        min=0.001
-    )
-
-    bpy.types.Scene.unit_height = bpy.props.FloatProperty(
-        name="Height",
-        default=297.0,
-        min=0.001
-    )
-
-    bpy.types.Scene.render_ppi = bpy.props.IntProperty(
-        name="PPI",
-        default=300,
-        min=1
-    )
+        
+    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(name="Unit", items=get_unit_items(), default='MM')
+    bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001)
+    bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001)
+    bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
 
 def unregister():
     for cls in reversed(classes):
