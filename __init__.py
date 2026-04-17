@@ -3,7 +3,7 @@ import bpy
 bl_info = {
     "name": "Unit to pixel converter",
     "author": "Viktor Kamp",
-    "version": (1, 0, 0),
+    "version": (1, 0, 1),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel",
     "description": "Calculates render resolution from different units, including inch, centimeter or millimeter.",
