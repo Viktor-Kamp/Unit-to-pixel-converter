@@ -5,7 +5,7 @@ bl_info = {
     "author": "Viktor Kamp",
     "version": (1, 0, 1),
     "blender": (4, 2, 0),
-    "location": "Properties > Output > Unit to pixel",
+    "location": "Properties > Output > Unit to pixel converter",
     "description": "Calculates render resolution from different units, including inch, centimeter or millimeter.",
     "category": "Render",
 }
