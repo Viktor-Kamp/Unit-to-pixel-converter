@@ -11,5 +11,5 @@ blender_version_min = "4.2.0"
 license = ["SPDX:GPL-3.0-or-later"]
 
 maintainer = "Viktor Kamp"
-support = "https://github.com/Viktor-Kamp/Unit-to-pixel-converter/issues"
 website = "https://github.com/Viktor-Kamp/Unit-to-pixel-converter"
+support = "https://github.com/Viktor-Kamp/Unit-to-pixel-converter/issues"
