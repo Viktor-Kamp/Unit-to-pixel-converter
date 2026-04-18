@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 
 id = "unit_to_pixel_converter"
-version = "1.0.2"
+version = "1.1.0"
 name = "Unit to pixel converter"
 tagline = "Calculates render resolution from different units"
 type = "add-on"
