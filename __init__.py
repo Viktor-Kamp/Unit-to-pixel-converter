@@ -10,7 +10,7 @@ bl_info = {
     "category": "Render",
 }
 
-# 1. Daten und Hilfsfunktionen (Ganz oben!)
+# Helper
 UNIT_DATA = {
     'MM': ("Millimeter", 25.4),
     'CM': ("Centimeter", 2.54),
@@ -18,17 +18,15 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 
+# Berechnet die Pixelmaße basierend auf den Scene-Properties
 def calculate_res(scene):
-    """Berechnet die Pixelmaße basierend auf den Scene-Properties."""
     _, factor = UNIT_DATA.get(scene.unit_selection, (None, 1.0))
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
+# Converts input values, when unit is changed
 def update_unit_conversion(self, context):
-    """Rechnet Width/Height um, wenn die Einheit gewechselt wird."""
-    # Wir holen die alte Einheit aus dem Speicher der Scene
-    # Wenn noch keine gespeichert ist, nehmen wir die aktuelle als Fallback
     old_unit = self.get("old_unit_selection", self.unit_selection)
     new_unit = self.unit_selection
     
@@ -36,14 +34,12 @@ def update_unit_conversion(self, context):
         old_factor = UNIT_DATA[old_unit][1]
         new_factor = UNIT_DATA[new_unit][1]
         
-        # Umrechnung
         self.unit_width = (self.unit_width / old_factor) * new_factor
         self.unit_height = (self.unit_height / old_factor) * new_factor
         
-    # Den neuen Status für das nächste Mal speichern
     self["old_unit_selection"] = new_unit
 
-# 2. UI Panel
+# UI Panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
     bl_label = "Unit to pixel converter"
     bl_idname = "RENDER_PT_unit_to_px"
@@ -62,14 +58,13 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
         
-        # Jetzt ist calculate_res garantiert bekannt
         px_x, px_y = calculate_res(s)
         
         box = layout.box()
         box.label(text=f"Preview: {px_x} x {px_y} px", icon='INFO')
         layout.operator("render.apply_unit_to_px", text="Apply Resolution", icon='CHECKMARK')
 
-# 3. Operator
+# Operator
 class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     bl_idname = "render.apply_unit_to_px"
     bl_label = "Apply Unit to Pixel"
@@ -81,7 +76,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
         self.report({'INFO'}, f"Resolution set to {s.render.resolution_x}x{s.render.resolution_y}")
         return {'FINISHED'}
 
-# 4. Registrierung
+# Registrierung
 classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
 
 def register():
