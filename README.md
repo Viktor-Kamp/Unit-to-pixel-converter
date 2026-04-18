@@ -1,6 +1,4 @@
-"Unit to pixel converter" is a Blender Add-On (earliest version compatible with, is "4.2").
-
-I created this Add-On to be able to quickly calculate the needed render resolution from different units (like inch, centimeter or millimeter) inside Blender while taking PPI/DPI into account.
+"Unit to pixel converter" is a Blender Add-On. I created it, to be able to quickly calculate the needed render resolution from different units (like inch, centimeter or millimeter) inside Blender while taking PPI/DPI into account.
 
 You can interact with the calculator in: "Properties > Output > Unit to pixel converter"
 
