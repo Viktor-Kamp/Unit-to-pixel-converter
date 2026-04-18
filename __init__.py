@@ -27,10 +27,10 @@ def calculate_res(scene):
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
-    old_unit = self.get("old_unit_selection", self.unit_selection)
+    old_unit = self.get("old_unit_selection")
     new_unit = self.unit_selection
     
-    if old_unit != new_unit:
+    if old_unit is not None and old_unit != new_unit:
         old_factor = UNIT_DATA[old_unit][1]
         new_factor = UNIT_DATA[new_unit][1]
         
