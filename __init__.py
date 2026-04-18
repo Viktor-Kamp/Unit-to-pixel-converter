@@ -19,7 +19,6 @@ UNIT_DATA = {
 }
 
 def calculate_res(scene):
-    """Berechnet die Pixelmaße basierend auf den Scene-Properties."""
     _, factor = UNIT_DATA.get(scene.unit_selection, (None, 1.0))
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
@@ -33,6 +32,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
     bl_region_type = 'WINDOW'
     bl_context = "output"
 
+    # Input fields
     def draw(self, context):
         layout = self.layout
         s = context.scene
@@ -44,7 +44,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
         
-        # Calculate preview
+        # Preview
         px_x, px_y = calculate_res(s)
         
         box = layout.box()
@@ -63,7 +63,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     def execute(self, context):
         s = context.scene
         
-        # Direkte Zuweisung via Tuple-Unpacking
+        # Direct assignment via tuple unpacking
         s.render.resolution_x, s.render.resolution_y = calculate_res(s)
         
         self.report({'INFO'}, f"Resolution set to {s.render.resolution_x}x{s.render.resolution_y}")
