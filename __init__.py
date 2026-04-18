@@ -18,7 +18,7 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 
-# Berechnet die Pixelmaße basierend auf den Scene-Properties
+# Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
     _, factor = UNIT_DATA.get(scene.unit_selection, (None, 1.0))
     px_x = int(scene.unit_width / factor * scene.render_ppi)
@@ -39,7 +39,7 @@ def update_unit_conversion(self, context):
         
     self["old_unit_selection"] = new_unit
 
-# UI Panel
+# UI panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
     bl_label = "Unit to pixel converter"
     bl_idname = "RENDER_PT_unit_to_px"
@@ -76,7 +76,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
         self.report({'INFO'}, f"Resolution set to {s.render.resolution_x}x{s.render.resolution_y}")
         return {'FINISHED'}
 
-# Registrierung
+# Registration
 classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
 
 def register():
