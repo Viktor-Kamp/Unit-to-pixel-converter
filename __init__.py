@@ -20,14 +20,14 @@ UNIT_DATA = {
 
 # Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
-    _, factor = UNIT_DATA.get(scene.unit_selection, (None, 1.0))
+    _, factor = UNIT_DATA.get(scene.unit_selection, ("Inch", 1.0))
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
-    old_unit = self.get("old_unit_selection")
+    old_unit = self.get("old_unit_selection", 'MM')
     new_unit = self.unit_selection
     
     if old_unit is not None and old_unit != new_unit:
