@@ -57,7 +57,6 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     bl_idname = "render.apply_unit_to_px"
     bl_label = "Apply Unit to Pixel"
-    bl_description = "Sets the render resolution based on the values above"
     bl_options = {'UNDO'}
 
     def execute(self, context):
