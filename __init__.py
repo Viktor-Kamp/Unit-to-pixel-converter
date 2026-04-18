@@ -18,11 +18,22 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 
-def calculate_res(scene):
-    _, factor = UNIT_DATA.get(scene.unit_selection, (None, 1.0))
-    px_x = int(scene.unit_width / factor * scene.render_ppi)
-    px_y = int(scene.unit_height / factor * scene.render_ppi)
-    return px_x, px_y
+# Neue Logik für die Einheiten-Umrechnung
+def update_unit_conversion(self, context):
+    # Wir nutzen einen Hilfswert in der Scene, um die alte Einheit zu tracken
+    old_unit = self.get("old_unit_selection", self.unit_selection)
+    new_unit = self.unit_selection
+    
+    if old_unit != new_unit:
+        _, old_factor = UNIT_DATA[old_unit]
+        _, new_factor = UNIT_DATA[new_unit]
+        
+        # Umrechnung: Wert -> Inch -> neue Einheit
+        self.unit_width = (self.unit_width / old_factor) * new_factor
+        self.unit_height = (self.unit_height / old_factor) * new_factor
+        
+        # Aktuellen Stand für den nächsten Wechsel speichern
+        self["old_unit_selection"] = new_unit
 
 # UI Panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
