@@ -38,32 +38,37 @@ def calculate_res(scene):
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
-# Update: Wenn Preset geändert wird
+# Update input values if preset is changed
 def update_preset_values(self, context):
     if self.preset_selection == 'CUSTOM':
         return
-    
-    # Maße der Vorlage in mm holen
-    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
-    
-    # In die aktuelle Ziel-Einheit des Add-ons umrechnen
+    w_mm, h_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
-    
-    # mm -> Inch -> Ziel-Einheit
+
+    # Set a lock so that the assignment below does not count as a ‘manual change’
+    self["is_internal_update"] = True
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
+    self["is_internal_update"] = False
 
-# Converts input values, when unit is changed
+def check_for_custom(self, context):
+    # If the change was NOT made internally (via a preset or unit change) -> Custom
+    if not self.get("is_internal_update", False):
+        if self.preset_selection != 'CUSTOM':
+            self.preset_selection = 'CUSTOM'
+
+# Converts input values if unit is changed
 def update_unit_conversion(self, context):
     old_unit = self.get("old_unit_selection", 'MM')
     new_unit = self.unit_selection
-    
     if old_unit is not None and old_unit != new_unit:
         old_factor = UNIT_DATA[old_unit][1]
         new_factor = UNIT_DATA[new_unit][1]
         
-        self.unit_width = (self.unit_width / old_factor) * new_factor
-        self.unit_height = (self.unit_height / old_factor) * new_factor
+        self["is_internal_update"] = True
+        self.unit_width = (self.unit_width / old_f) * new_f
+        self.unit_height = (self.unit_height / old_f) * new_f
+        self["is_internal_update"] = False
         
     self["old_unit_selection"] = new_unit
 
@@ -106,14 +111,12 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     def execute(self, context):
         s = context.scene
         res_x, res_y = calculate_res(s)
-        
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
 
         # Dynamically changes "Pixels" in Pixel Density panel according to used unit in Add-On
         if hasattr(s.render, "ppm_factor"):
-            current_base = s.render.ppm_base
-            s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
+            s.render.ppm_factor = (s.render_ppi / 0.0254) * s.render.ppm_base
 
         self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px and {s.render_ppi} PPI")
         return {'FINISHED'}
@@ -138,6 +141,7 @@ def register():
         default='MM',
         update=update_unit_conversion
     )
+    
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
