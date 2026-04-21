@@ -112,9 +112,18 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     def execute(self, context):
         s = context.scene
         res_x, res_y = calculate_res(s)
+        
+        # 1. Haupt-Auflösung setzen
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
-        self.report({'INFO'}, f"Resolution: {res_x}x{res_y} px")
+
+        # 2. Pixel Density ("Pixels"-Zeile) anpassen
+        # Rechnet PPI in Pixel pro Meter um (1 Inch = 0.0254 Meter)
+        if hasattr(s.render, "ppm_factor"):
+            current_base = s.render.ppm_base
+            s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
+
+        self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px and {s.render_ppi} PPI")
         return {'FINISHED'}
 
 classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
