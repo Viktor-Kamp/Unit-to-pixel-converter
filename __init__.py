@@ -83,7 +83,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
 
-# Dynamically changes "Pixels" in Pixel Density panel according to used unit in Add-On
+        # Dynamically changes "Pixels" in Pixel Density panel according to used unit in Add-On
         if hasattr(s.render, "ppm_factor"):
             current_base = s.render.ppm_base
             s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
