@@ -49,6 +49,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        
         layout.use_property_split = True
         layout.use_property_decorate = False 
         
@@ -77,8 +78,15 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
 
     def execute(self, context):
         s = context.scene
-        s.render.resolution_x, s.render.resolution_y = calculate_res(s)
-        self.report({'INFO'}, f"Resolution set to {s.render.resolution_x}x{s.render.resolution_y}")
+        res_x, res_y = calculate_res(s)
+        
+        s.render.resolution_x = res_x
+        s.render.resolution_y = res_y
+        
+        if hasattr(s.render, "pixel_density"):
+            s.render.pixel_density = s.render_ppi
+        
+        self.report({'INFO'}, f"Resolution: {res_x}x{res_y}, Density: {s.render_ppi} PPI")
         return {'FINISHED'}
 
 # Registration
