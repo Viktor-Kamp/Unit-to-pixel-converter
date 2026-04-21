@@ -105,16 +105,37 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         
-        # Anschnitt Sektion
-        col.separator()
-        bleed_box = layout.box()
-        bleed_box.label(text="Bleed (mm)")
-        row = bleed_box.row(align=True)
-        row.use_property_split = False # Kompakter für 4 Felder
-        row.prop(s, "bleed_top", text="Top")
-        row.prop(s, "bleed_bottom", text="Bot")
-        row.prop(s, "bleed_left", text="L")
-        row.prop(s, "bleed_right", text="R")
+        # Kompakte Bleed-Zeile
+        # split(factor=0.4) sorgt dafür, dass das Label links so viel Platz wie "Height" bekommt
+        row = layout.split(factor=0.4)
+        row.label(text="Bleed (mm)")
+        
+        # Sub-Grid für die 4 Felder
+        bleed_grid = row.grid_flow(columns=4, align=True, even_columns=True)
+        
+        # Spalte 1: Top
+        c1 = bleed_grid.column(align=True)
+        c1.alignment = 'CENTER'
+        c1.label(text="Top")
+        c1.prop(s, "bleed_top", text="")
+        
+        # Spalte 2: Bottom
+        c2 = bleed_grid.column(align=True)
+        c2.alignment = 'CENTER'
+        c2.label(text="Bottom")
+        c2.prop(s, "bleed_bottom", text="")
+        
+        # Spalte 3: Left
+        c3 = bleed_grid.column(align=True)
+        c3.alignment = 'CENTER'
+        c3.label(text="Left")
+        c3.prop(s, "bleed_left", text="")
+        
+        # Spalte 4: Right
+        c4 = bleed_grid.column(align=True)
+        c4.alignment = 'CENTER'
+        c4.label(text="Right")
+        c4.prop(s, "bleed_right", text="")
 
         layout.prop(s, "render_ppi")
         
