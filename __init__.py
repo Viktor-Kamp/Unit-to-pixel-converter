@@ -73,16 +73,15 @@ def update_unit_conversion(self, context):
 
 def calculate_res(scene):
     factor = UNIT_DATA[scene.unit_selection][1]
-    # Konvertiere Grundmaße in Inch
+    # Grundmaße in Inch
     width_inch = scene.unit_width / factor
     height_inch = scene.unit_height / factor
     
-    # Addiere Anschnitt (immer in MM angegeben, daher / 25.4 für Inch)
-    bleed_w_inch = (scene.bleed_left + scene.bleed_right) / 25.4
-    bleed_h_inch = (scene.bleed_top + scene.bleed_bottom) / 25.4
+    # Anschnitt: 1 Wert mm -> Inch (Mal 2, da umlaufend links/rechts bzw. oben/unten)
+    bleed_inch = (scene.bleed_amount * 2) / 25.4
     
-    px_x = int((width_inch + bleed_w_inch) * scene.render_ppi)
-    px_y = int((height_inch + bleed_h_inch) * scene.render_ppi)
+    px_x = int((width_inch + bleed_inch) * scene.render_ppi)
+    px_y = int((height_inch + bleed_inch) * scene.render_ppi)
     return px_x, px_y
 
 # UI panel
@@ -99,43 +98,13 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         s = context.scene
 
         col = layout.column(align=True)
-        col.prop(s, "preset_selection", text="Preset")
+        col.prop(s, "preset_selection")
         col.separator()
-        col.prop(s, "unit_selection", text="Unit")
+        col.prop(s, "unit_selection")
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
-        
-        # Kompakte Bleed-Zeile
-        # split(factor=0.4) sorgt dafür, dass das Label links so viel Platz wie "Height" bekommt
-        row = layout.split(factor=0.4)
-        row.label(text="Bleed (mm)")
-        
-        # Sub-Grid für die 4 Felder
-        bleed_grid = row.grid_flow(columns=4, align=True, even_columns=True)
-        
-        # Spalte 1: Top
-        c1 = bleed_grid.column(align=True)
-        c1.alignment = 'CENTER'
-        c1.label(text="Top")
-        c1.prop(s, "bleed_top", text="")
-        
-        # Spalte 2: Bottom
-        c2 = bleed_grid.column(align=True)
-        c2.alignment = 'CENTER'
-        c2.label(text="Bottom")
-        c2.prop(s, "bleed_bottom", text="")
-        
-        # Spalte 3: Left
-        c3 = bleed_grid.column(align=True)
-        c3.alignment = 'CENTER'
-        c3.label(text="Left")
-        c3.prop(s, "bleed_left", text="")
-        
-        # Spalte 4: Right
-        c4 = bleed_grid.column(align=True)
-        c4.alignment = 'CENTER'
-        c4.label(text="Right")
-        c4.prop(s, "bleed_right", text="")
+        col.prop(s, "bleed_amount") # Neues einheitliches Feld
+        col.prop(s, "render_ppi")
 
         layout.prop(s, "render_ppi")
         
@@ -191,25 +160,19 @@ def register():
         name="Height", default=297.0, min=0.001, update=update_to_custom)
     
     # Neue Bleed-Properties (Millimeter)
-    bpy.types.Scene.bleed_top = bpy.props.FloatProperty(name="Top", default=3.0, min=0.0)
-    bpy.types.Scene.bleed_bottom = bpy.props.FloatProperty(name="Bottom", default=3.0, min=0.0)
-    bpy.types.Scene.bleed_left = bpy.props.FloatProperty(name="Left", default=3.0, min=0.0)
-    bpy.types.Scene.bleed_right = bpy.props.FloatProperty(name="Right", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed (mm)", default=3.0, min=0.0)
     
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
 
 def unregister():
-    for cls in reversed(classes):
-        bpy.utils.unregister_class(cls)
+    bpy.utils.unregister_class(RENDER_PT_unit_to_px)
+    bpy.utils.unregister_class(RENDER_OT_apply_unit_to_px)
     del bpy.types.Scene.preset_selection
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
     del bpy.types.Scene.unit_height
-    del bpy.types.Scene.bleed_top
-    del bpy.types.Scene.bleed_bottom
-    del bpy.types.Scene.bleed_left
-    del bpy.types.Scene.bleed_right
+    del bpy.types.Scene.bleed_amount
     del bpy.types.Scene.render_ppi
-
+    
 if __name__ == "__main__":
     register()
