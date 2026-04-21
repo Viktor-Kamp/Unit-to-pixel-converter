@@ -2,4 +2,4 @@
 
 You can interact with the Add-On in: "Properties > Output > Unit to pixel converter"
 
-<img width="293" height="188" alt="Screenshot 2026-04-15 130025" src="https://github.com/user-attachments/assets/bb662cc3-7036-43c2-be63-ec71fe1756db" />
+<img width="345" height="203" alt="Screenshot 2026-04-21 211046" src="https://github.com/user-attachments/assets/9541eb56-2b06-4976-83ac-1ccff768fe32" />
