@@ -17,6 +17,19 @@ UNIT_DATA = {
     'INCH': ("Inch", 1.0),
     'BANANA': ("Banana", 25.4 / 178.0),
 }
+PRESET_DATA = {
+    'CUSTOM': ("Custom", (0, 0)),
+    'A0': ("DIN A0", (841.0, 1189.0)),
+    'A1': ("DIN A1", (594.0, 841.0)),
+    'A2': ("DIN A2", (420.0, 594.0)),
+    'A3': ("DIN A3", (297.0, 420.0)),
+    'A4': ("DIN A4", (210.0, 297.0)),
+    'A5': ("DIN A5", (148.0, 210.0)),
+    'A6': ("DIN A6", (105.0, 148.0)),
+    'US_LETTER': ("US Letter", (215.9, 279.4)),
+    'US_LEGAL': ("US Legal", (215.9, 355.6)),
+    'TABLOID': ("Tabloid", (279.4, 431.8)),
+}
 
 # Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
@@ -24,6 +37,21 @@ def calculate_res(scene):
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
+
+# Update: Wenn Preset geändert wird
+def update_preset_values(self, context):
+    if self.preset_selection == 'CUSTOM':
+        return
+    
+    # Maße der Vorlage in mm holen
+    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
+    
+    # In die aktuelle Ziel-Einheit des Add-ons umrechnen
+    target_factor = UNIT_DATA[self.unit_selection][1]
+    
+    # mm -> Inch -> Ziel-Einheit
+    self.unit_width = (width_mm / 25.4) * target_factor
+    self.unit_height = (height_mm / 25.4) * target_factor
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
@@ -49,15 +77,14 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
         layout.use_property_split = True
-        layout.use_property_decorate = False 
-        
+        layout.use_property_decorate = False
         s = context.scene
 
         col = layout.column(align=True)
-        col.prop(s, "unit_selection", text="Unit")
+        col.prop(s, "preset_selection", text="Preset")
         col.separator()
+        col.prop(s, "unit_selection", text="Unit")
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
@@ -97,7 +124,14 @@ classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
-        
+
+    bpy.types.Scene.preset_selection = bpy.props.EnumProperty(
+        name="Preset",
+        items=[(k, v[0], "") for k, v in PRESET_DATA.items()],
+        default='A4',
+        update=update_preset_values
+    )
+    
     bpy.types.Scene.unit_selection = bpy.props.EnumProperty(
         name="Unit", 
         items=[(k, v[0], "") for k, v in UNIT_DATA.items()], 
@@ -111,6 +145,7 @@ def register():
 def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
+    del bpy.types.Scene.preset_selection
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
     del bpy.types.Scene.unit_height
