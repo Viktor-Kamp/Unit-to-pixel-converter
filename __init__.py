@@ -73,8 +73,16 @@ def update_unit_conversion(self, context):
 
 def calculate_res(scene):
     factor = UNIT_DATA[scene.unit_selection][1]
-    px_x = int(scene.unit_width / factor * scene.render_ppi)
-    px_y = int(scene.unit_height / factor * scene.render_ppi)
+    # Konvertiere Grundmaße in Inch
+    width_inch = scene.unit_width / factor
+    height_inch = scene.unit_height / factor
+    
+    # Addiere Anschnitt (immer in MM angegeben, daher / 25.4 für Inch)
+    bleed_w_inch = (scene.bleed_left + scene.bleed_right) / 25.4
+    bleed_h_inch = (scene.bleed_top + scene.bleed_bottom) / 25.4
+    
+    px_x = int((width_inch + bleed_w_inch) * scene.render_ppi)
+    px_y = int((height_inch + bleed_h_inch) * scene.render_ppi)
     return px_x, px_y
 
 # UI panel
@@ -96,7 +104,19 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_selection", text="Unit")
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
-        col.prop(s, "render_ppi")
+        
+        # Anschnitt Sektion
+        col.separator()
+        bleed_box = layout.box()
+        bleed_box.label(text="Bleed (mm)")
+        row = bleed_box.row(align=True)
+        row.use_property_split = False # Kompakter für 4 Felder
+        row.prop(s, "bleed_top", text="Top")
+        row.prop(s, "bleed_bottom", text="Bot")
+        row.prop(s, "bleed_left", text="L")
+        row.prop(s, "bleed_right", text="R")
+
+        layout.prop(s, "render_ppi")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
@@ -143,11 +163,18 @@ def register():
         default='MM',
         update=update_unit_conversion
     )
-    
+
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(
         name="Width", default=210.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(
         name="Height", default=297.0, min=0.001, update=update_to_custom)
+    
+    # Neue Bleed-Properties (Millimeter)
+    bpy.types.Scene.bleed_top = bpy.props.FloatProperty(name="Top", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_bottom = bpy.props.FloatProperty(name="Bottom", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_left = bpy.props.FloatProperty(name="Left", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_right = bpy.props.FloatProperty(name="Right", default=3.0, min=0.0)
+    
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
 
 def unregister():
@@ -157,6 +184,10 @@ def unregister():
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
     del bpy.types.Scene.unit_height
+    del bpy.types.Scene.bleed_top
+    del bpy.types.Scene.bleed_bottom
+    del bpy.types.Scene.bleed_left
+    del bpy.types.Scene.bleed_right
     del bpy.types.Scene.render_ppi
 
 if __name__ == "__main__":
