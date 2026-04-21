@@ -105,8 +105,6 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "bleed_amount") # Neues einheitliches Feld
         col.prop(s, "render_ppi")
-
-        layout.prop(s, "render_ppi")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
