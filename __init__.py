@@ -3,7 +3,7 @@ import bpy
 bl_info = {
     "name": "Unit to pixel converter",
     "author": "Viktor Kamp",
-    "version": (1, 1, 2),
+    "version": (1, 2, 0),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel converter",
     "description": "Calculates render resolution from different units, including inch, centimeter and millimeter.",
@@ -31,23 +31,22 @@ PRESET_DATA = {
     'TABLOID': ("Tabloid", (279.4, 431.8)),
 }
 
-# 1. Update: Springt auf Custom bei manueller Änderung
+# Changes to "Preset" to "Custom" if manually changed
 def update_to_custom(self, context):
-    # Verhindert Endlosschleife während ein Preset geladen wird
+    # Prevents an infinite loop whilst a preset is being loaded
     if self.get("_no_update", False):
         return
     if self.preset_selection != 'CUSTOM':
         self.preset_selection = 'CUSTOM'
 
-# 2. Update: Wenn Preset geändert wird
+# Updates if "Preset" is changed
 def update_preset_values(self, context):
     if self.preset_selection == 'CUSTOM':
         return
     
-    # Flag setzen, damit update_to_custom ignoriert wird
+    # Set a flag to ignore "update_to_custom"
     self["_no_update"] = True
     
-    # Korrekter Zugriff auf die mm-Werte im Dictionary
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
@@ -56,7 +55,7 @@ def update_preset_values(self, context):
     
     self["_no_update"] = False
 
-# 3. Update: Einheiten-Konvertierung
+# Converts input values, when unit is changed
 def update_unit_conversion(self, context):
     old_unit = self.get("old_unit_selection", 'MM')
     new_unit = self.unit_selection
@@ -73,12 +72,12 @@ def update_unit_conversion(self, context):
     self["old_unit_selection"] = new_unit
 
 def calculate_res(scene):
-    # Korrekter Zugriff auf den Umrechnungsfaktor [1]
     factor = UNIT_DATA[scene.unit_selection][1]
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
+# UI panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
     bl_label = "Unit to pixel converter"
     bl_idname = "RENDER_PT_unit_to_px"
@@ -104,6 +103,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         box.label(text=f"Preview: {px_x} x {px_y} px", icon='INFO')
         layout.operator("render.apply_unit_to_px", text="Apply Resolution", icon='CHECKMARK')
 
+# Operator
 class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     bl_idname = "render.apply_unit_to_px"
     bl_label = "Apply Unit to Pixel"
@@ -112,20 +112,18 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     def execute(self, context):
         s = context.scene
         res_x, res_y = calculate_res(s)
-        
-        # 1. Haupt-Auflösung setzen
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
 
-        # 2. Pixel Density ("Pixels"-Zeile) anpassen
-        # Rechnet PPI in Pixel pro Meter um (1 Inch = 0.0254 Meter)
+        # Changes "Pixel Density" according to PPI from Add-On
         if hasattr(s.render, "ppm_factor"):
             current_base = s.render.ppm_base
             s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
 
         self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px and {s.render_ppi} PPI")
         return {'FINISHED'}
-
+        
+# Registration
 classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
 
 def register():
@@ -146,7 +144,6 @@ def register():
         update=update_unit_conversion
     )
     
-    # HIER: Update-Trigger für manuelle Änderungen
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(
         name="Width", default=210.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(
