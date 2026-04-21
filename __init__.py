@@ -88,7 +88,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
             current_base = s.render.ppm_base
             s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
 
-        self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px; {s.render_ppi} PPI")
+        self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px and {s.render_ppi} PPI")
         return {'FINISHED'}
 
 # Registration
