@@ -3,7 +3,7 @@ import bpy
 bl_info = {
     "name": "Unit to pixel converter",
     "author": "Viktor Kamp",
-    "version": (1, 1, 0),
+    "version": (1, 1, 2),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel converter",
     "description": "Calculates render resolution from different units, including inch, centimeter and millimeter.",
@@ -18,7 +18,7 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 PRESET_DATA = {
-    'CUSTOM': ("Custom", (0, 0)),
+    'CUSTOM': ("Custom", (0.0, 0.0)),
     'A0': ("DIN A0", (841.0, 1189.0)),
     'A1': ("DIN A1", (594.0, 841.0)),
     'A2': ("DIN A2", (420.0, 594.0)),
@@ -31,31 +31,32 @@ PRESET_DATA = {
     'TABLOID': ("Tabloid", (279.4, 431.8)),
 }
 
-# 1. Update-Funktion: Springt auf Custom bei manueller Änderung
+# 1. Update: Springt auf Custom bei manueller Änderung
 def update_to_custom(self, context):
-    # Nur umschalten, wenn wir nicht gerade ein Preset laden
-    if self.get("_is_updating_preset", False):
+    # Verhindert Endlosschleife während ein Preset geladen wird
+    if self.get("_no_update", False):
         return
     if self.preset_selection != 'CUSTOM':
         self.preset_selection = 'CUSTOM'
 
-# 2. Update-Funktion: Werte setzen wenn Preset gewählt wird
+# 2. Update: Wenn Preset geändert wird
 def update_preset_values(self, context):
     if self.preset_selection == 'CUSTOM':
         return
     
-    # Flag setzen, damit "update_to_custom" nicht ausgelöst wird
-    self["_is_updating_preset"] = True
+    # Flag setzen, damit update_to_custom ignoriert wird
+    self["_no_update"] = True
     
+    # Korrekter Zugriff auf die mm-Werte im Dictionary
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
     
-    self["_is_updating_preset"] = False
+    self["_no_update"] = False
 
-# 3. Update-Funktion: Einheiten konvertieren
+# 3. Update: Einheiten-Konvertierung
 def update_unit_conversion(self, context):
     old_unit = self.get("old_unit_selection", 'MM')
     new_unit = self.unit_selection
@@ -64,21 +65,20 @@ def update_unit_conversion(self, context):
         old_factor = UNIT_DATA[old_unit][1]
         new_factor = UNIT_DATA[new_unit][1]
         
-        self["_is_updating_preset"] = True # Verhindert Sprung auf Custom
+        self["_no_update"] = True
         self.unit_width = (self.unit_width / old_factor) * new_factor
         self.unit_height = (self.unit_height / old_factor) * new_factor
-        self["_is_updating_preset"] = False
+        self["_no_update"] = False
         
     self["old_unit_selection"] = new_unit
 
-# Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
-    _, factor = UNIT_DATA.get(scene.unit_selection, ("Inch", 1.0))
+    # Korrekter Zugriff auf den Umrechnungsfaktor [1]
+    factor = UNIT_DATA[scene.unit_selection][1]
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
-# UI panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
     bl_label = "Unit to pixel converter"
     bl_idname = "RENDER_PT_unit_to_px"
@@ -89,7 +89,6 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         layout.use_property_split = True
-        layout.use_property_decorate = False
         s = context.scene
 
         col = layout.column(align=True)
@@ -101,14 +100,10 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "render_ppi")
         
         px_x, px_y = calculate_res(s)
-
-        sub = layout.column()
-        sub.use_property_split = False
         box = layout.box()
         box.label(text=f"Preview: {px_x} x {px_y} px", icon='INFO')
         layout.operator("render.apply_unit_to_px", text="Apply Resolution", icon='CHECKMARK')
 
-# Operator
 class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     bl_idname = "render.apply_unit_to_px"
     bl_label = "Apply Unit to Pixel"
@@ -117,19 +112,11 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
     def execute(self, context):
         s = context.scene
         res_x, res_y = calculate_res(s)
-        
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
-
-        # Dynamically changes "Pixels" in Pixel Density panel according to used unit in Add-On
-        if hasattr(s.render, "ppm_factor"):
-            current_base = s.render.ppm_base
-            s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
-
-        self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px and {s.render_ppi} PPI")
+        self.report({'INFO'}, f"Resolution: {res_x}x{res_y} px")
         return {'FINISHED'}
 
-# Registration
 classes = (RENDER_PT_unit_to_px, RENDER_OT_apply_unit_to_px)
 
 def register():
@@ -150,8 +137,11 @@ def register():
         update=update_unit_conversion
     )
     
-    bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001)
-    bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001)
+    # HIER: Update-Trigger für manuelle Änderungen
+    bpy.types.Scene.unit_width = bpy.props.FloatProperty(
+        name="Width", default=210.0, min=0.001, update=update_to_custom)
+    bpy.types.Scene.unit_height = bpy.props.FloatProperty(
+        name="Height", default=297.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
 
 def unregister():
