@@ -85,27 +85,8 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
 
 # Dynamically changes Pixel Density according to used Unit
         if hasattr(s.render, "ppm_factor"):
-            # Wir holen uns die aktuelle Anzeige-Einheit aus dem Blender-Standard-Panel
-            # Mögliche Werte: 'CUSTOM', 'PIXELS_CENTIMETER', 'PIXELS_INCH', 'PIXELS_METER'
-            unit = getattr(s.render, "pixel_density_unit", 'PIXELS_INCH')
-            
-            if unit == 'PIXELS_INCH':
-                s.render.ppm_base = 0.0254
-                s.render.ppm_factor = float(s.render_ppi)
-            
-            elif unit == 'PIXELS_CENTIMETER':
-                s.render.ppm_base = 0.01
-                # 1 Inch = 2.54 cm -> PPI / 2.54 = Pixels per cm
-                s.render.ppm_factor = s.render_ppi / 2.54
-                
-            elif unit == 'PIXELS_METER':
-                s.render.ppm_base = 1.0
-                # 1 Inch = 0.0254 m -> PPI / 0.0254 = Pixels per meter
-                s.render.ppm_factor = s.render_ppi / 0.0254
-                
-            else: # CUSTOM
-                current_base = s.render.ppm_base
-                s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
+            current_base = s.render.ppm_base
+            s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
 
         self.report({'INFO'}, f"Resolution set to: {res_x}x{res_y} px; {s.render_ppi} PPI")
         return {'FINISHED'}
