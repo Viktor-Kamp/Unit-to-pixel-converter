@@ -83,10 +83,14 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
         
+        if hasattr(s.render, "ppm_factor"):
+            s.render.ppm_base = 0.0254 
+            s.render.ppm_factor = float(s.render_ppi)
+            
         if hasattr(s.render, "pixel_density"):
             s.render.pixel_density = s.render_ppi
-        
-        self.report({'INFO'}, f"Resolution: {res_x}x{res_y}, Density: {s.render_ppi} PPI")
+
+        self.report({'INFO'}, f"Resolution: {res_x}x{res_y} px | {s.render_ppi} PPI angewandt")
         return {'FINISHED'}
 
 # Registration
