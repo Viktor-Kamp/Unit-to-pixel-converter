@@ -34,8 +34,10 @@ PRESET_DATA = {
 # Hilfsfunktion: Setzt Preset auf Custom, wenn manuell Werte geändert werden
 def update_to_custom(self, context):
     if self.preset_selection != 'CUSTOM':
-        # Deaktiviere das Update-Triggering kurzzeitig, um Endlosschleifen zu vermeiden
-        self.preset_selection = 'CUSTOM'
+        # Verhindert, dass die Änderung der Werte das Preset überschreibt, 
+        # während ein Preset-Wechsel läuft
+        if not self.get("_no_update", False):
+            self.preset_selection = 'CUSTOM'
 
 # Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
@@ -48,12 +50,17 @@ def calculate_res(scene):
 def update_preset_values(self, context):
     if self.preset_selection == 'CUSTOM':
         return
+
+    # Flag setzen, damit update_to_custom nicht dazwischenfunkt
+    self["_no_update"] = True
     
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
+
+    self["_no_update"] = False
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
@@ -64,8 +71,11 @@ def update_unit_conversion(self, context):
         old_factor = UNIT_DATA[old_unit][1]
         new_factor = UNIT_DATA[new_unit][1]
         
+        # Flag setzen, damit beim Einheitenwechsel das Preset NICHT auf Custom springt
+        self["_no_update"] = True
         self.unit_width = (self.unit_width / old_factor) * new_factor
         self.unit_height = (self.unit_height / old_factor) * new_factor
+        self["_no_update"] = False
         
     self["old_unit_selection"] = new_unit
 
@@ -140,6 +150,7 @@ def register():
         default='MM',
         update=update_unit_conversion
     )
+    
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
