@@ -1,6 +1,6 @@
 "Unit to pixel converter" is a Blender Add-On (compatible since Blender 4.2 until latest). I created it, to be able to quickly calculate the needed render resolution from different units (like inch, centimeter or millimeter) inside Blender while taking PPI/DPI (pixel density) into account. This is especially useful for print production.
 
-Tip: Since Blender 4.5, it is possible to set the pixel Density (PPI) to the metadata of certain Image-File-Formats ("Properties > Output > Output > Pixel Density"). Using this eliminates the need to change the PPI to the right density inside image editing software.
+Tip: Since Blender 4.5, it is possible to set the pixel Density (Properties > Output > Output > Pixel Density) to the metadata of certain Image-File-Formats. Using this eliminates the need to change the PPI to the right density inside image editing software.
 
 You can interact with the Add-On in: "Properties > Output > Unit to pixel converter"
 
