@@ -31,13 +31,45 @@ PRESET_DATA = {
     'TABLOID': ("Tabloid", (279.4, 431.8)),
 }
 
-# Hilfsfunktion: Setzt Preset auf Custom, wenn manuell Werte geändert werden
+# 1. Update-Funktion: Springt auf Custom bei manueller Änderung
 def update_to_custom(self, context):
+    # Nur umschalten, wenn wir nicht gerade ein Preset laden
+    if self.get("_is_updating_preset", False):
+        return
     if self.preset_selection != 'CUSTOM':
-        # Verhindert, dass die Änderung der Werte das Preset überschreibt, 
-        # während ein Preset-Wechsel läuft
-        if not self.get("_no_update", False):
-            self.preset_selection = 'CUSTOM'
+        self.preset_selection = 'CUSTOM'
+
+# 2. Update-Funktion: Werte setzen wenn Preset gewählt wird
+def update_preset_values(self, context):
+    if self.preset_selection == 'CUSTOM':
+        return
+    
+    # Flag setzen, damit "update_to_custom" nicht ausgelöst wird
+    self["_is_updating_preset"] = True
+    
+    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
+    target_factor = UNIT_DATA[self.unit_selection][1]
+    
+    self.unit_width = (width_mm / 25.4) * target_factor
+    self.unit_height = (height_mm / 25.4) * target_factor
+    
+    self["_is_updating_preset"] = False
+
+# 3. Update-Funktion: Einheiten konvertieren
+def update_unit_conversion(self, context):
+    old_unit = self.get("old_unit_selection", 'MM')
+    new_unit = self.unit_selection
+    
+    if old_unit != new_unit:
+        old_factor = UNIT_DATA[old_unit][1]
+        new_factor = UNIT_DATA[new_unit][1]
+        
+        self["_is_updating_preset"] = True # Verhindert Sprung auf Custom
+        self.unit_width = (self.unit_width / old_factor) * new_factor
+        self.unit_height = (self.unit_height / old_factor) * new_factor
+        self["_is_updating_preset"] = False
+        
+    self["old_unit_selection"] = new_unit
 
 # Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
@@ -45,39 +77,6 @@ def calculate_res(scene):
     px_x = int(scene.unit_width / factor * scene.render_ppi)
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
-
-# Update if preset is changed
-def update_preset_values(self, context):
-    if self.preset_selection == 'CUSTOM':
-        return
-
-    # Flag setzen, damit update_to_custom nicht dazwischenfunkt
-    self["_no_update"] = True
-    
-    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
-    target_factor = UNIT_DATA[self.unit_selection][1]
-    
-    self.unit_width = (width_mm / 25.4) * target_factor
-    self.unit_height = (height_mm / 25.4) * target_factor
-
-    self["_no_update"] = False
-
-# Converts input values, when unit is changed
-def update_unit_conversion(self, context):
-    old_unit = self.get("old_unit_selection", 'MM')
-    new_unit = self.unit_selection
-    
-    if old_unit is not None and old_unit != new_unit:
-        old_factor = UNIT_DATA[old_unit][1]
-        new_factor = UNIT_DATA[new_unit][1]
-        
-        # Flag setzen, damit beim Einheitenwechsel das Preset NICHT auf Custom springt
-        self["_no_update"] = True
-        self.unit_width = (self.unit_width / old_factor) * new_factor
-        self.unit_height = (self.unit_height / old_factor) * new_factor
-        self["_no_update"] = False
-        
-    self["old_unit_selection"] = new_unit
 
 # UI panel
 class RENDER_PT_unit_to_px(bpy.types.Panel):
