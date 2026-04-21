@@ -49,6 +49,9 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+        layout.use_property_split = True
+        layout.use_property_decorate = False 
+        
         s = context.scene
 
         col = layout.column(align=True)
@@ -59,7 +62,9 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "render_ppi")
         
         px_x, px_y = calculate_res(s)
-        
+
+        sub = layout.column()
+        sub.use_property_split = False
         box = layout.box()
         box.label(text=f"Preview: {px_x} x {px_y} px", icon='INFO')
         layout.operator("render.apply_unit_to_px", text="Apply Resolution", icon='CHECKMARK')
