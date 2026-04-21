@@ -31,6 +31,12 @@ PRESET_DATA = {
     'TABLOID': ("Tabloid", (279.4, 431.8)),
 }
 
+# Hilfsfunktion: Setzt Preset auf Custom, wenn manuell Werte geändert werden
+def update_to_custom(self, context):
+    if self.preset_selection != 'CUSTOM':
+        # Deaktiviere das Update-Triggering kurzzeitig, um Endlosschleifen zu vermeiden
+        self.preset_selection = 'CUSTOM'
+
 # Calculates pixel dimensions based on scene properties
 def calculate_res(scene):
     _, factor = UNIT_DATA.get(scene.unit_selection, ("Inch", 1.0))
@@ -38,18 +44,14 @@ def calculate_res(scene):
     px_y = int(scene.unit_height / factor * scene.render_ppi)
     return px_x, px_y
 
-# Update: Wenn Preset geändert wird
+# Update if preset is changed
 def update_preset_values(self, context):
     if self.preset_selection == 'CUSTOM':
         return
     
-    # Maße der Vorlage in mm holen
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
-    
-    # In die aktuelle Ziel-Einheit des Add-ons umrechnen
     target_factor = UNIT_DATA[self.unit_selection][1]
     
-    # mm -> Inch -> Ziel-Einheit
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
 
