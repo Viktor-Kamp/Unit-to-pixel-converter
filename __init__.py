@@ -64,16 +64,6 @@ PRESET_DATA = {
     'C10': ("DIN C10", (28.0, 40.0)),
     'SEP4': (" ", (0.0, 0.0)),
     
-    # --- DIN D-Reihe (Spezialformate) ---
-    'D0': ("DIN D0", (771.0, 1091.0)),
-    'D1': ("DIN D1", (545.0, 771.0)),
-    'D2': ("DIN D2", (385.0, 545.0)),
-    'D3': ("DIN D3", (272.0, 385.0)),
-    'D4': ("DIN D4", (192.0, 272.0)),
-    'D5': ("DIN D5", (136.0, 192.0)),
-    'D6': ("DIN D6", (96.0, 136.0)),
-    'SEP5': (" ", (0.0, 0.0)),
-    
     # --- US / ANSI Standards ---
     'US_Letter': ("US Letter", (215.9, 279.4)),
     'US_Legal': ("US Legal", (215.9, 355.6)),
@@ -84,23 +74,7 @@ PRESET_DATA = {
     'ANSI_C': ("ANSI C", (431.8, 558.8)),
     'ANSI_D': ("ANSI D", (558.8, 863.6)),
     'ANSI_E': ("ANSI E", (863.6, 1117.6)),
-    'SEP6': (" ", (0.0, 0.0)),
-    
-    # --- US ARCH (Architektur) ---
-    'ARCH_A': ("ARCH A", (228.6, 304.8)),
-    'ARCH_B': ("ARCH B", (304.8, 457.2)),
-    'ARCH_C': ("ARCH C", (457.2, 609.6)),
-    'ARCH_D': ("ARCH D", (609.6, 914.4)),
-    'ARCH_E': ("ARCH E", (914.4, 1219.2)),
-    'ARCH_E1': ("ARCH E1", (762.0, 1066.8)),
-    'SEP7': (" ", (0.0, 0.0)),
-    # --- Druck-Rohformate (SRA) ---
-    'SRA0': ("SRA0", (900.0, 1280.0)),
-    'SRA1': ("SRA1", (640.0, 900.0)),
-    'SRA2': ("SRA2", (450.0, 640.0)),
-    'SRA3': ("SRA3", (320.0, 450.0)),
-    'SRA4': ("SRA4", (225.0, 320.0)),
-    'SEP8': (" ", (0.0, 0.0)),
+    'SEP5': (" ", (0.0, 0.0)),
     
     # --- Japanische Standards (JIS B) ---
     'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
@@ -108,15 +82,15 @@ PRESET_DATA = {
     'JIS_B2': ("JIS B2", (515.0, 728.0)),
     'JIS_B4': ("JIS B4", (257.0, 364.0)),
     'JIS_B5': ("JIS B5", (182.0, 257.0)),
-    'SEP9': (" ", (0.0, 0.0)),
+    'SEP6': (" ", (0.0, 0.0)),
     
     # --- Gängige Umschläge & Sonstiges ---
-    'DL': ("DIN Lang", (110.0, 220.0)),
-    'Env_C65': ("C6/5 Umschlag", (114.0, 229.0)),
+    'DL': ("DIN Long", (110.0, 220.0)),
+    'Env_C65': ("C6/5 Envelop", (114.0, 229.0)),
     'Env_Comm_10': ("#10 Envelope (US)", (104.8, 241.3)),
     'Env_Monarch': ("Monarch Env (US)", (98.4, 190.5)),
-    'Business_Card_EU': ("Visitenkarte (EU)", (85.0, 55.0)),
-    'Business_Card_US': ("Visitenkarte (US)", (88.9, 50.8)),
+    'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
+    'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
