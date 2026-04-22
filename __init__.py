@@ -157,7 +157,7 @@ def register():
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
-    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=0.0, min=0.0)
 
 def unregister():
     for cls in classes:
