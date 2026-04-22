@@ -67,6 +67,20 @@ PRESET_DATA = {
     'DL': ("DIN Long", (110.0, 220.0)),
     'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
     'SEP5': (" ", (0.0, 0.0)),
+
+    # Japanese standards (JIS B)
+    'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
+    'JIS_B1': ("JIS B1", (728.0, 1030.0)),
+    'JIS_B2': ("JIS B2", (515.0, 728.0)),
+    'JIS_B3': ("JIS B3", (364.0, 515.0)),
+    'JIS_B4': ("JIS B4", (257.0, 364.0)),
+    'JIS_B5': ("JIS B5", (182.0, 257.0)),
+    'JIS_B6': ("JIS B6", (128.0, 182.0)),
+    'JIS_B7': ("JIS B7", (91.0, 128.0)),
+    'JIS_B8': ("JIS B8", (64.0, 91.0)),
+    'JIS_B9': ("JIS B9", (45.0, 64.0)),
+    'JIS_B10': ("JIS B10", (32.0, 45.0)),
+    'SEP7': (" ", (0.0, 0.0)),
     
     # US / ANSI standards
     'US_Letter': ("US Letter", (215.9, 279.4)),
@@ -79,14 +93,6 @@ PRESET_DATA = {
     'Env_Comm_10': ("#10 Envelope (US Business)", (104.8, 241.3)),
     'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
     'SEP6': (" ", (0.0, 0.0)),
-    
-    # Japanese standards (JIS B)
-    'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
-    'JIS_B1': ("JIS B1", (728.0, 1030.0)),
-    'JIS_B2': ("JIS B2", (515.0, 728.0)),
-    'JIS_B4': ("JIS B4", (257.0, 364.0)),
-    'JIS_B5': ("JIS B5", (182.0, 257.0)),
-    'SEP7': (" ", (0.0, 0.0)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
