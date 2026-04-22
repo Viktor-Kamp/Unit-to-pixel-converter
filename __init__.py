@@ -18,7 +18,9 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 PRESET_DATA = {
-    # ISO 216 / DIN A-Reihe (Standard Drucksachen)
+    'CUSTOM': ("Custom", (0.0, 0.0)),
+    
+# DIN A-Reihe (Standard Drucksachen)
     'A0': ("DIN A0", (841.0, 1189.0)),
     'A1': ("DIN A1", (594.0, 841.0)),
     'A2': ("DIN A2", (420.0, 594.0)),
@@ -31,7 +33,7 @@ PRESET_DATA = {
     'A9': ("DIN A9", (37.0, 52.0)),
     'A10': ("DIN A10", (26.0, 37.0)),
 
-    # ISO 216 / DIN B-Reihe (Plakate & Ordner)
+    # DIN B-Reihe (Zusatzgrößen für Ordner/Plakate)
     'B0': ("DIN B0", (1000.0, 1414.0)),
     'B1': ("DIN B1", (707.0, 1000.0)),
     'B2': ("DIN B2", (500.0, 707.0)),
@@ -44,7 +46,7 @@ PRESET_DATA = {
     'B9': ("DIN B9", (44.0, 62.0)),
     'B10': ("DIN B10", (31.0, 44.0)),
 
-    # ISO 216 / DIN C-Reihe (Umschläge)
+    # DIN C-Reihe (Briefumschläge international)
     'C0': ("DIN C0", (917.0, 1297.0)),
     'C1': ("DIN C1", (648.0, 917.0)),
     'C2': ("DIN C2", (458.0, 648.0)),
@@ -57,45 +59,47 @@ PRESET_DATA = {
     'C9': ("DIN C9", (40.0, 57.0)),
     'C10': ("DIN C10", (28.0, 40.0)),
 
-    # Nordamerikanische Standards (ANSI / Office)
+    # Nordamerikanische Büro-Standards
     'US_Letter': ("US Letter", (215.9, 279.4)),
     'US_Legal': ("US Legal", (215.9, 355.6)),
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
     'US_Ledger': ("US Ledger", (431.8, 279.4)),
     'US_Executive': ("US Executive", (184.2, 266.7)),
     'US_Statement': ("US Statement", (139.7, 215.9)),
+
+    # ANSI & ARCH (Technische Zeichnungen/Pläne)
     'ANSI_A': ("ANSI A", (215.9, 279.4)),
     'ANSI_B': ("ANSI B", (279.4, 431.8)),
     'ANSI_C': ("ANSI C", (431.8, 558.8)),
     'ANSI_D': ("ANSI D", (558.8, 863.6)),
     'ANSI_E': ("ANSI E", (863.6, 1117.6)),
-
-    # Architektur-Formate (US ARCH)
     'ARCH_A': ("ARCH A", (228.6, 304.8)),
     'ARCH_B': ("ARCH B", (304.8, 457.2)),
     'ARCH_C': ("ARCH C", (457.2, 609.6)),
     'ARCH_D': ("ARCH D", (609.6, 914.4)),
     'ARCH_E': ("ARCH E", (914.4, 1219.2)),
-    'ARCH_E1': ("ARCH E1", (762.0, 1066.8)),
 
-    # Druck-Rohformate (SRA - Supplementary Raw Format)
+    # Druckerei-Rohformate (für Beschnittzugabe)
     'SRA0': ("SRA0", (900.0, 1280.0)),
     'SRA1': ("SRA1", (640.0, 900.0)),
     'SRA2': ("SRA2", (450.0, 640.0)),
     'SRA3': ("SRA3", (320.0, 450.0)),
     'SRA4': ("SRA4", (225.0, 320.0)),
-
-    # Japanische Standards (JIS B-Serie)
+    
+    # --- Japanische Standards (JIS B) ---
     'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
     'JIS_B1': ("JIS B1", (728.0, 1030.0)),
     'JIS_B2': ("JIS B2", (515.0, 728.0)),
-    'JIS_B3': ("JIS B3", (364.0, 515.0)),
     'JIS_B4': ("JIS B4", (257.0, 364.0)),
     'JIS_B5': ("JIS B5", (182.0, 257.0)),
 
-    # Spezial- und Briefumschlagformate
-    'DIN_Lang': ("DIN Lang", (110.0, 220.0)),
-    'Env_Commercial_10': ("#10 Envelope", (104.8, 241.3)),
+    # --- Gängige Umschläge & Sonstiges ---
+    'DL': ("DIN Lang", (110.0, 220.0)),
+    'Env_C65': ("C6/5 Umschlag", (114.0, 229.0)),
+    'Env_Comm_10': ("#10 Envelope (US)", (104.8, 241.3)),
+    'Env_Monarch': ("Monarch Env (US)", (98.4, 190.5)),
+    'Business_Card_EU': ("Visitenkarte (EU)", (85.0, 55.0)),
+    'Business_Card_US': ("Visitenkarte (US)", (88.9, 50.8)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
