@@ -90,9 +90,9 @@ PRESET_DATA = {
     'US_Legal': ("US Legal", (215.9, 355.6)),
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
     'US_Ledger': ("US Ledger", (431.8, 279.4)),
-    'US_Executive': ("US Executive", (184.2, 266.7)),
+    'US_Executive': ("US Executive", (184.15, 266.7)),
     'US_Statement': ("US Statement", (139.7, 215.9)),
-    'Env_Comm_10': ("US #10 Envelope", (104.8, 241.3)),
+    'Env_Comm_10': ("US #10 Envelope", (104.775, 241.3)),
     'Business_Card_US': ("US Business card", (88.9, 50.8)),
 }
 
