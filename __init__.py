@@ -65,18 +65,30 @@ def update_unit_conversion(self, context):
         new_factor = UNIT_DATA[new_unit][1]
         
         self["_no_update"] = True
+
         self.unit_width = (self.unit_width / old_factor) * new_factor
         self.unit_height = (self.unit_height / old_factor) * new_factor
+        
+        if old_unit == 'INCH' or new_unit == 'INCH':
+            if new_unit == 'INCH':
+                self.bleed_amount = self.bleed_amount / 25.4
+            else:
+                self.bleed_amount = self.bleed_amount * 25.4
+                
         self["_no_update"] = False
         
     self["old_unit_selection"] = new_unit
 
 def calculate_res(scene):
     factor = UNIT_DATA[scene.unit_selection][1]
-
+    
     width_inch = scene.unit_width / factor
     height_inch = scene.unit_height / factor
-    bleed_inch = (scene.bleed_amount * 2) / 25.4
+    
+    if scene.unit_selection == 'INCH':
+        bleed_inch = scene.bleed_amount * 2
+    else:
+        bleed_inch = (scene.bleed_amount * 2) / 25.4
     
     px_x = int((width_inch + bleed_inch) * scene.render_ppi)
     px_y = int((height_inch + bleed_inch) * scene.render_ppi)
@@ -103,7 +115,9 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
         col.separator()
-        col.prop(s, "bleed_amount")
+        # Dynamic label for Bleed
+        bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
+        col.prop(s, "bleed_amount", text=bleed_label)
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
@@ -143,11 +157,11 @@ def register():
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
-    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed (mm)", default=3.0, min=0.0)
+    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=3.0, min=0.0)
 
 def unregister():
-    bpy.utils.unregister_class(RENDER_PT_unit_to_px)
-    bpy.utils.unregister_class(RENDER_OT_apply_unit_to_px)
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
     del bpy.types.Scene.preset_selection
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
