@@ -82,7 +82,7 @@ PRESET_DATA = {
     'JIS_B8': ("JIS B8", (64.0, 91.0)),
     'JIS_B9': ("JIS B9", (45.0, 64.0)),
     'JIS_B10': ("JIS B10", (32.0, 45.0)),
-    'SEP7': (" ", (0.0, 0.0)),
+    'SEP6': (" ", (0.0, 0.0)),
     
     # US / ANSI standards
     'US_Letter': ("US Letter", (215.9, 279.4)),
@@ -94,7 +94,7 @@ PRESET_DATA = {
     'US_Statement': ("US Statement", (139.7, 215.9)),
     'Env_Comm_10': ("US #10 Envelope", (104.8, 241.3)),
     'Business_Card_US': ("US Business card", (88.9, 50.8)),
-    'SEP6': (" ", (0.0, 0.0)),
+    'SEP7': (" ", (0.0, 0.0)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
