@@ -18,7 +18,7 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 PRESET_DATA = {
-    'CUSTOM': ("Custom", (0.0, 0.0)),
+    # ISO 216 / DIN A-Reihe (Standard Drucksachen)
     'A0': ("DIN A0", (841.0, 1189.0)),
     'A1': ("DIN A1", (594.0, 841.0)),
     'A2': ("DIN A2", (420.0, 594.0)),
@@ -26,9 +26,76 @@ PRESET_DATA = {
     'A4': ("DIN A4", (210.0, 297.0)),
     'A5': ("DIN A5", (148.0, 210.0)),
     'A6': ("DIN A6", (105.0, 148.0)),
-    'US_LETTER': ("US Letter", (215.9, 279.4)),
-    'US_LEGAL': ("US Legal", (215.9, 355.6)),
-    'TABLOID': ("Tabloid", (279.4, 431.8)),
+    'A7': ("DIN A7", (74.0, 105.0)),
+    'A8': ("DIN A8", (52.0, 74.0)),
+    'A9': ("DIN A9", (37.0, 52.0)),
+    'A10': ("DIN A10", (26.0, 37.0)),
+
+    # ISO 216 / DIN B-Reihe (Plakate & Ordner)
+    'B0': ("DIN B0", (1000.0, 1414.0)),
+    'B1': ("DIN B1", (707.0, 1000.0)),
+    'B2': ("DIN B2", (500.0, 707.0)),
+    'B3': ("DIN B3", (353.0, 500.0)),
+    'B4': ("DIN B4", (250.0, 353.0)),
+    'B5': ("DIN B5", (176.0, 250.0)),
+    'B6': ("DIN B6", (125.0, 176.0)),
+    'B7': ("DIN B7", (88.0, 125.0)),
+    'B8': ("DIN B8", (62.0, 88.0)),
+    'B9': ("DIN B9", (44.0, 62.0)),
+    'B10': ("DIN B10", (31.0, 44.0)),
+
+    # ISO 216 / DIN C-Reihe (Umschläge)
+    'C0': ("DIN C0", (917.0, 1297.0)),
+    'C1': ("DIN C1", (648.0, 917.0)),
+    'C2': ("DIN C2", (458.0, 648.0)),
+    'C3': ("DIN C3", (324.0, 458.0)),
+    'C4': ("DIN C4", (229.0, 324.0)),
+    'C5': ("DIN C5", (162.0, 229.0)),
+    'C6': ("DIN C6", (114.0, 162.0)),
+    'C7': ("DIN C7", (81.0, 114.0)),
+    'C8': ("DIN C8", (57.0, 81.0)),
+    'C9': ("DIN C9", (40.0, 57.0)),
+    'C10': ("DIN C10", (28.0, 40.0)),
+
+    # Nordamerikanische Standards (ANSI / Office)
+    'US_Letter': ("US Letter", (215.9, 279.4)),
+    'US_Legal': ("US Legal", (215.9, 355.6)),
+    'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
+    'US_Ledger': ("US Ledger", (431.8, 279.4)),
+    'US_Executive': ("US Executive", (184.2, 266.7)),
+    'US_Statement': ("US Statement", (139.7, 215.9)),
+    'ANSI_A': ("ANSI A", (215.9, 279.4)),
+    'ANSI_B': ("ANSI B", (279.4, 431.8)),
+    'ANSI_C': ("ANSI C", (431.8, 558.8)),
+    'ANSI_D': ("ANSI D", (558.8, 863.6)),
+    'ANSI_E': ("ANSI E", (863.6, 1117.6)),
+
+    # Architektur-Formate (US ARCH)
+    'ARCH_A': ("ARCH A", (228.6, 304.8)),
+    'ARCH_B': ("ARCH B", (304.8, 457.2)),
+    'ARCH_C': ("ARCH C", (457.2, 609.6)),
+    'ARCH_D': ("ARCH D", (609.6, 914.4)),
+    'ARCH_E': ("ARCH E", (914.4, 1219.2)),
+    'ARCH_E1': ("ARCH E1", (762.0, 1066.8)),
+
+    # Druck-Rohformate (SRA - Supplementary Raw Format)
+    'SRA0': ("SRA0", (900.0, 1280.0)),
+    'SRA1': ("SRA1", (640.0, 900.0)),
+    'SRA2': ("SRA2", (450.0, 640.0)),
+    'SRA3': ("SRA3", (320.0, 450.0)),
+    'SRA4': ("SRA4", (225.0, 320.0)),
+
+    # Japanische Standards (JIS B-Serie)
+    'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
+    'JIS_B1': ("JIS B1", (728.0, 1030.0)),
+    'JIS_B2': ("JIS B2", (515.0, 728.0)),
+    'JIS_B3': ("JIS B3", (364.0, 515.0)),
+    'JIS_B4': ("JIS B4", (257.0, 364.0)),
+    'JIS_B5': ("JIS B5", (182.0, 257.0)),
+
+    # Spezial- und Briefumschlagformate
+    'DIN_Lang': ("DIN Lang", (110.0, 220.0)),
+    'Env_Commercial_10': ("#10 Envelope", (104.8, 241.3)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
