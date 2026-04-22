@@ -18,11 +18,10 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 PRESET_DATA = {
-    # --- CUSTOM / MANUELL ---
     'CUSTOM': ("Custom", (0.0, 0.0)),
     'SEP1': (" ", (0.0, 0.0)),
     
-    # --- DIN A-Reihe (Standard) ---
+    # DIN A (Standard)
     'A0': ("DIN A0", (841.0, 1189.0)),
     'A1': ("DIN A1", (594.0, 841.0)),
     'A2': ("DIN A2", (420.0, 594.0)),
@@ -36,7 +35,7 @@ PRESET_DATA = {
     'A10': ("DIN A10", (26.0, 37.0)),
     'SEP2': (" ", (0.0, 0.0)),
     
-    # --- DIN B-Reihe (Plakate/Ordner) ---
+    # DIN B (Posters/Folders)
     'B0': ("DIN B0", (1000.0, 1414.0)),
     'B1': ("DIN B1", (707.0, 1000.0)),
     'B2': ("DIN B2", (500.0, 707.0)),
@@ -50,7 +49,7 @@ PRESET_DATA = {
     'B10': ("DIN B10", (31.0, 44.0)),
     'SEP3': (" ", (0.0, 0.0)),
     
-    # --- DIN C-Reihe (Umschläge) ---
+    # DIN C (Envelops)
     'C0': ("DIN C0", (917.0, 1297.0)),
     'C1': ("DIN C1", (648.0, 917.0)),
     'C2': ("DIN C2", (458.0, 648.0)),
@@ -63,32 +62,29 @@ PRESET_DATA = {
     'C9': ("DIN C9", (40.0, 57.0)),
     'C10': ("DIN C10", (28.0, 40.0)),
     'SEP4': (" ", (0.0, 0.0)),
+
+    # DIN Long
+    'DL': ("DIN Long", (110.0, 220.0)),
+    'SEP5': (" ", (0.0, 0.0)),
     
-    # --- US / ANSI Standards ---
+    # US / ANSI standards
     'US_Letter': ("US Letter", (215.9, 279.4)),
+    'US_Half_Letter': ("US Half Letter", (139.7, 215.9)),
     'US_Legal': ("US Legal", (215.9, 355.6)),
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
     'US_Ledger': ("US Ledger", (431.8, 279.4)),
-    'ANSI_A': ("ANSI A", (215.9, 279.4)),
-    'ANSI_B': ("ANSI B", (279.4, 431.8)),
-    'ANSI_C': ("ANSI C", (431.8, 558.8)),
-    'ANSI_D': ("ANSI D", (558.8, 863.6)),
-    'ANSI_E': ("ANSI E", (863.6, 1117.6)),
-    'SEP5': (" ", (0.0, 0.0)),
+    'US_Executive': ("US Executive", (148.2, 266.7)),
+    'SEP6': (" ", (0.0, 0.0)),
     
-    # --- Japanische Standards (JIS B) ---
+    # Japanese standards (JIS B)
     'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
     'JIS_B1': ("JIS B1", (728.0, 1030.0)),
     'JIS_B2': ("JIS B2", (515.0, 728.0)),
     'JIS_B4': ("JIS B4", (257.0, 364.0)),
     'JIS_B5': ("JIS B5", (182.0, 257.0)),
-    'SEP6': (" ", (0.0, 0.0)),
+    'SEP7': (" ", (0.0, 0.0)),
     
-    # --- Gängige Umschläge & Sonstiges ---
-    'DL': ("DIN Long", (110.0, 220.0)),
-    'Env_C65': ("C6/5 Envelop", (114.0, 229.0)),
-    'Env_Comm_10': ("#10 Envelope (US)", (104.8, 241.3)),
-    'Env_Monarch': ("Monarch Env (US)", (98.4, 190.5)),
+    # Other
     'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
     'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
 }
@@ -103,24 +99,25 @@ def update_to_custom(self, context):
 
 # Updates if "Preset" is changed
 def update_preset_values(self, context):
-    # Verhindert Auswahl von Leerzeilen (Keys die mit SEP beginnen)
+    # Prevents selection of blank lines
     if self.preset_selection.startswith('SEP'):
         self.preset_selection = self.get("old_preset_selection", 'A4')
         return
 
-    # Speichere gültige Auswahl für den Rücksprung-Fall
+    # Save valid selection for the case where the user returns
     self["old_preset_selection"] = self.preset_selection
 
     if self.preset_selection == 'CUSTOM':
         return
     
-    # Rest deiner Logik...
     self["_no_update"] = True
+    
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
+    
     self["_no_update"] = False
 
 # Converts input values, when unit is changed
