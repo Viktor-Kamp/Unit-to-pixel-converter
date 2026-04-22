@@ -94,7 +94,6 @@ PRESET_DATA = {
     'US_Statement': ("US Statement", (139.7, 215.9)),
     'Env_Comm_10': ("US #10 Envelope", (104.8, 241.3)),
     'Business_Card_US': ("US Business card", (88.9, 50.8)),
-    'SEP7': (" ", (0.0, 0.0)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
