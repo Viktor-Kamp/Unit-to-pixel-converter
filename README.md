@@ -8,7 +8,7 @@ Since Blender 4.5, it is possible to set a value for "Pixel Density" to be prese
 - Pixel density: Calculates with PPI (Pixel per Inch)
 - Bleed: Just put in the bleed, you use with your print layout. I hate calculating manually. That's the reason, this feature exists.
 - Presets: Choose between commonly used paper formats
-- Compatibility: Since Blender 4.2 with no end in sight
+- Compatibility: Compatible since Blender 4.2 until latest
 
 ### Usage
 You can interact with the Add-On in: "Properties > Output > Unit to pixel converter"
