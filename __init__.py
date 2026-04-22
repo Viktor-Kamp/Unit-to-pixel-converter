@@ -3,7 +3,7 @@ import bpy
 bl_info = {
     "name": "Unit to pixel converter",
     "author": "Viktor Kamp",
-    "version": (1, 2, 1),
+    "version": (1, 3, 0),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel converter",
     "description": "Calculates render resolution from different units, including inch, centimeter and millimeter while also taking PPI/DPI into account.",
@@ -187,7 +187,6 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
         col.separator()
-
         bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
         col.prop(s, "bleed_amount", text=bleed_label)
         
