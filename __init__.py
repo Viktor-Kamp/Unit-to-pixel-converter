@@ -65,6 +65,8 @@ PRESET_DATA = {
 
     # DE / EU special
     'DL': ("DIN Long", (110.0, 220.0)),
+    'DL': ("DIN Long Extra", (115.0, 220.0)),
+    'C6_5': ("Envelop C6/5", (114.0, 229.0)),
     'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
     'SEP5': (" ", (0.0, 0.0)),
 
@@ -89,9 +91,9 @@ PRESET_DATA = {
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
     'US_Ledger': ("US Ledger", (431.8, 279.4)),
     'US_Executive': ("US Executive", (184.2, 266.7)),
-    'US_Statement': ("US Statement", (139.7, 215.9)), # US-Pendant zu A5
-    'Env_Comm_10': ("#10 Envelope (US Business)", (104.8, 241.3)),
-    'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
+    'US_Statement': ("US Statement", (139.7, 215.9)),
+    'Env_Comm_10': ("US #10 Envelope", (104.8, 241.3)),
+    'Business_Card_US': ("US Business card", (88.9, 50.8)),
     'SEP6': (" ", (0.0, 0.0)),
 }
 
