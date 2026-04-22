@@ -31,7 +31,7 @@ PRESET_DATA = {
     'TABLOID': ("Tabloid", (279.4, 431.8)),
 }
 
-# Changes to "Preset" to "Custom" if manually changed
+# Changes "Preset" to "Custom" if manually changed
 def update_to_custom(self, context):
     # Prevents an infinite loop whilst a preset is being loaded
     if self.get("_no_update", False):
@@ -73,11 +73,9 @@ def update_unit_conversion(self, context):
 
 def calculate_res(scene):
     factor = UNIT_DATA[scene.unit_selection][1]
-    # Grundmaße in Inch
+
     width_inch = scene.unit_width / factor
     height_inch = scene.unit_height / factor
-    
-    # Anschnitt: 1 Wert mm -> Inch (Mal 2, da umlaufend links/rechts bzw. oben/unten)
     bleed_inch = (scene.bleed_amount * 2) / 25.4
     
     px_x = int((width_inch + bleed_inch) * scene.render_ppi)
@@ -103,8 +101,9 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_selection")
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
-        col.prop(s, "bleed_amount") # Neues einheitliches Feld
         col.prop(s, "render_ppi")
+        col.separator()
+        col.prop(s, "bleed_amount")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
@@ -123,7 +122,7 @@ class RENDER_OT_apply_unit_to_px(bpy.types.Operator):
         s.render.resolution_x = res_x
         s.render.resolution_y = res_y
 
-        # Changes "Pixel Density" according to PPI from Add-On
+        # Changes "Pixels" in "Pixel Density" panel according to PPI from Add-On
         if hasattr(s.render, "ppm_factor"):
             current_base = s.render.ppm_base
             s.render.ppm_factor = (s.render_ppi / 0.0254) * current_base
@@ -138,29 +137,13 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
-    bpy.types.Scene.preset_selection = bpy.props.EnumProperty(
-        name="Preset",
-        items=[(k, v[0], "") for k, v in PRESET_DATA.items()],
-        default='A4',
-        update=update_preset_values
-    )
-    
-    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(
-        name="Unit", 
-        items=[(k, v[0], "") for k, v in UNIT_DATA.items()], 
-        default='MM',
-        update=update_unit_conversion
-    )
+    bpy.types.Scene.preset_selection = bpy.props.EnumProperty(name="Preset",items=[(k, v[0], "") for k, v in PRESET_DATA.items()], default='A4', update=update_preset_values)
+    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(name="Unit", items=[(k, v[0], "") for k, v in UNIT_DATA.items()], default='MM', update=update_unit_conversion)
 
-    bpy.types.Scene.unit_width = bpy.props.FloatProperty(
-        name="Width", default=210.0, min=0.001, update=update_to_custom)
-    bpy.types.Scene.unit_height = bpy.props.FloatProperty(
-        name="Height", default=297.0, min=0.001, update=update_to_custom)
-    
-    # Neue Bleed-Properties (Millimeter)
-    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed (mm)", default=3.0, min=0.0)
-    
+    bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom)
+    bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom)
     bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
+    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed (mm)", default=3.0, min=0.0)
 
 def unregister():
     bpy.utils.unregister_class(RENDER_PT_unit_to_px)
@@ -169,8 +152,8 @@ def unregister():
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
     del bpy.types.Scene.unit_height
-    del bpy.types.Scene.bleed_amount
     del bpy.types.Scene.render_ppi
+    del bpy.types.Scene.bleed_amount
     
 if __name__ == "__main__":
     register()
