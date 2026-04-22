@@ -63,8 +63,9 @@ PRESET_DATA = {
     'C10': ("DIN C10", (28.0, 40.0)),
     'SEP4': (" ", (0.0, 0.0)),
 
-    # DIN Long
+    # DE / EU special
     'DL': ("DIN Long", (110.0, 220.0)),
+    'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
     'SEP5': (" ", (0.0, 0.0)),
     
     # US / ANSI standards
@@ -73,7 +74,10 @@ PRESET_DATA = {
     'US_Legal': ("US Legal", (215.9, 355.6)),
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
     'US_Ledger': ("US Ledger", (431.8, 279.4)),
-    'US_Executive': ("US Executive", (148.2, 266.7)),
+    'US_Executive': ("US Executive", (184.2, 266.7)),
+    'US_Statement': ("US Statement", (139.7, 215.9)), # US-Pendant zu A5
+    'Env_Comm_10': ("#10 Envelope (US Business)", (104.8, 241.3)),
+    'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
     'SEP6': (" ", (0.0, 0.0)),
     
     # Japanese standards (JIS B)
@@ -83,10 +87,6 @@ PRESET_DATA = {
     'JIS_B4': ("JIS B4", (257.0, 364.0)),
     'JIS_B5': ("JIS B5", (182.0, 257.0)),
     'SEP7': (" ", (0.0, 0.0)),
-    
-    # Other
-    'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
-    'Business_Card_US': ("Business card (US)", (88.9, 50.8)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
