@@ -18,88 +18,84 @@ UNIT_DATA = {
     'BANANA': ("Banana", 25.4 / 178.0),
 }
 PRESET_DATA = {
-    'CUSTOM': ("Custom", (0.0, 0.0)),
+    # --- Allgemein ---
+    'CUSTOM': ("--- EIGENE MAẞE ---", (0.0, 0.0)),
     
-# DIN A-Reihe (Standard Drucksachen)
-    'A0': ("DIN A0", (841.0, 1189.0)),
-    'A1': ("DIN A1", (594.0, 841.0)),
-    'A2': ("DIN A2", (420.0, 594.0)),
-    'A3': ("DIN A3", (297.0, 420.0)),
-    'A4': ("DIN A4", (210.0, 297.0)),
-    'A5': ("DIN A5", (148.0, 210.0)),
-    'A6': ("DIN A6", (105.0, 148.0)),
-    'A7': ("DIN A7", (74.0, 105.0)),
-    'A8': ("DIN A8", (52.0, 74.0)),
-    'A9': ("DIN A9", (37.0, 52.0)),
-    'A10': ("DIN A10", (26.0, 37.0)),
+    # --- DIN A-REIHE ---
+    'HEADER_A': ("--- DIN A (Standard) ---", (0.0, 0.0)),
+    'A0': ("A0", (841.0, 1189.0)),
+    'A1': ("A1", (594.0, 841.0)),
+    'A2': ("A2", (420.0, 594.0)),
+    'A3': ("A3", (297.0, 420.0)),
+    'A4': ("A4", (210.0, 297.0)),
+    'A5': ("A5", (148.0, 210.0)),
+    'A6': ("A6", (105.0, 148.0)),
+    'A7': ("A7", (74.0, 105.0)),
+    'A8': ("A8", (52.0, 74.0)),
+    'A9': ("A9", (37.0, 52.0)),
+    'A10': ("A10", (26.0, 37.0)),
 
-    # DIN B-Reihe (Zusatzgrößen für Ordner/Plakate)
-    'B0': ("DIN B0", (1000.0, 1414.0)),
-    'B1': ("DIN B1", (707.0, 1000.0)),
-    'B2': ("DIN B2", (500.0, 707.0)),
-    'B3': ("DIN B3", (353.0, 500.0)),
-    'B4': ("DIN B4", (250.0, 353.0)),
-    'B5': ("DIN B5", (176.0, 250.0)),
-    'B6': ("DIN B6", (125.0, 176.0)),
-    'B7': ("DIN B7", (88.0, 125.0)),
-    'B8': ("DIN B8", (62.0, 88.0)),
-    'B9': ("DIN B9", (44.0, 62.0)),
-    'B10': ("DIN B10", (31.0, 44.0)),
+    # --- DIN B-REIHE ---
+    'HEADER_B': ("--- DIN B (Plakate) ---", (0.0, 0.0)),
+    'B0': ("B0", (1000.0, 1414.0)),
+    'B1': ("B1", (707.0, 1000.0)),
+    'B2': ("B2", (500.0, 707.0)),
+    'B3': ("B3", (353.0, 500.0)),
+    'B4': ("B4", (250.0, 353.0)),
+    'B5': ("B5", (176.0, 250.0)),
+    'B6': ("B6", (125.0, 176.0)),
+    'B7': ("B7", (88.0, 125.0)),
+    'B8': ("B8", (62.0, 88.0)),
+    'B9': ("B9", (44.0, 62.0)),
+    'B10': ("B10", (31.0, 44.0)),
 
-    # DIN C-Reihe (Briefumschläge international)
-    'C0': ("DIN C0", (917.0, 1297.0)),
-    'C1': ("DIN C1", (648.0, 917.0)),
-    'C2': ("DIN C2", (458.0, 648.0)),
-    'C3': ("DIN C3", (324.0, 458.0)),
-    'C4': ("DIN C4", (229.0, 324.0)),
-    'C5': ("DIN C5", (162.0, 229.0)),
-    'C6': ("DIN C6", (114.0, 162.0)),
-    'C7': ("DIN C7", (81.0, 114.0)),
-    'C8': ("DIN C8", (57.0, 81.0)),
-    'C9': ("DIN C9", (40.0, 57.0)),
-    'C10': ("DIN C10", (28.0, 40.0)),
+    # --- DIN C-REIHE ---
+    'HEADER_C': ("--- DIN C (Umschläge) ---", (0.0, 0.0)),
+    'C0': ("C0", (917.0, 1297.0)),
+    'C1': ("C1", (648.0, 917.0)),
+    'C2': ("C2", (458.0, 648.0)),
+    'C3': ("C3", (324.0, 458.0)),
+    'C4': ("C4", (229.0, 324.0)),
+    'C5': ("C5", (162.0, 229.0)),
+    'C6': ("C6", (114.0, 162.0)),
+    'C7': ("C7", (81.0, 114.0)),
+    'C8': ("C8", (57.0, 81.0)),
+    'C9': ("C9", (40.0, 57.0)),
+    'C10': ("C10", (28.0, 40.0)),
 
-    # Nordamerikanische Büro-Standards
+    # --- US / ANSI STANDARDS ---
+    'HEADER_US': ("--- US / ANSI ---", (0.0, 0.0)),
     'US_Letter': ("US Letter", (215.9, 279.4)),
     'US_Legal': ("US Legal", (215.9, 355.6)),
     'US_Tabloid': ("US Tabloid", (279.4, 431.8)),
-    'US_Ledger': ("US Ledger", (431.8, 279.4)),
-    'US_Executive': ("US Executive", (184.2, 266.7)),
-    'US_Statement': ("US Statement", (139.7, 215.9)),
-
-    # ANSI & ARCH (Technische Zeichnungen/Pläne)
     'ANSI_A': ("ANSI A", (215.9, 279.4)),
     'ANSI_B': ("ANSI B", (279.4, 431.8)),
     'ANSI_C': ("ANSI C", (431.8, 558.8)),
     'ANSI_D': ("ANSI D", (558.8, 863.6)),
     'ANSI_E': ("ANSI E", (863.6, 1117.6)),
+
+    # --- ARCHITEKTUR ---
+    'HEADER_ARCH': ("--- ARCH (Bauwesen) ---", (0.0, 0.0)),
     'ARCH_A': ("ARCH A", (228.6, 304.8)),
     'ARCH_B': ("ARCH B", (304.8, 457.2)),
     'ARCH_C': ("ARCH C", (457.2, 609.6)),
     'ARCH_D': ("ARCH D", (609.6, 914.4)),
     'ARCH_E': ("ARCH E", (914.4, 1219.2)),
 
-    # Druckerei-Rohformate (für Beschnittzugabe)
+    # --- PROFI-DRUCK (ROHBÖGEN) ---
+    'HEADER_SRA': ("--- SRA (Druckerei) ---", (0.0, 0.0)),
     'SRA0': ("SRA0", (900.0, 1280.0)),
     'SRA1': ("SRA1", (640.0, 900.0)),
     'SRA2': ("SRA2", (450.0, 640.0)),
     'SRA3': ("SRA3", (320.0, 450.0)),
     'SRA4': ("SRA4", (225.0, 320.0)),
-    
-    # --- Japanische Standards (JIS B) ---
-    'JIS_B0': ("JIS B0", (1030.0, 1456.0)),
-    'JIS_B1': ("JIS B1", (728.0, 1030.0)),
-    'JIS_B2': ("JIS B2", (515.0, 728.0)),
-    'JIS_B4': ("JIS B4", (257.0, 364.0)),
-    'JIS_B5': ("JIS B5", (182.0, 257.0)),
 
-    # --- Gängige Umschläge & Sonstiges ---
+    # --- SPECIALS ---
+    'HEADER_SPEC': ("--- Spezialformate ---", (0.0, 0.0)),
     'DL': ("DIN Lang", (110.0, 220.0)),
-    'Env_C65': ("C6/5 Umschlag", (114.0, 229.0)),
-    'Env_Comm_10': ("#10 Envelope (US)", (104.8, 241.3)),
-    'Env_Monarch': ("Monarch Env (US)", (98.4, 190.5)),
-    'Business_Card_EU': ("Visitenkarte (EU)", (85.0, 55.0)),
-    'Business_Card_US': ("Visitenkarte (US)", (88.9, 50.8)),
+    'Env_Comm_10': ("#10 Business (US)", (104.8, 241.3)),
+    'Business_Card_EU': ("Visitenkarte EU", (85.0, 55.0)),
+    'Business_Card_US': ("Visitenkarte US", (88.9, 50.8)),
 }
 
 # Changes "Preset" to "Custom" if manually changed
@@ -112,7 +108,7 @@ def update_to_custom(self, context):
 
 # Updates if "Preset" is changed
 def update_preset_values(self, context):
-    if self.preset_selection == 'CUSTOM':
+    if self.preset_selection == 'CUSTOM' or self.preset_selection.startswith('HEADER_'):
         return
     
     # Set a flag to ignore "update_to_custom"
@@ -186,7 +182,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
         col.separator()
-        # Dynamic label for Bleed
+
         bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
         col.prop(s, "bleed_amount", text=bleed_label)
         
