@@ -65,7 +65,7 @@ PRESET_DATA = {
 
     # DE / EU special
     'DL': ("DIN Long", (110.0, 220.0)),
-    'DL': ("DIN Long Extra", (115.0, 220.0)),
+    'DLE': ("DIN Long Extra", (115.0, 220.0)),
     'C6_5': ("Envelop C6/5", (114.0, 229.0)),
     'Business_Card_EU': ("Business card (EU)", (85.0, 55.0)),
     'SEP5': (" ", (0.0, 0.0)),
