@@ -6,7 +6,7 @@ bl_info = {
     "version": (1, 3, 0),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel converter",
-    "description": "Calculates render resolution from different units, including inch, centimeter and millimeter while also taking PPI/DPI into account.",
+    "description": "Calculates render resolution from different measurement units, including inch, centimeter and millimeter while also taking PPI/DPI into account.",
     "category": "Render",
 }
 
