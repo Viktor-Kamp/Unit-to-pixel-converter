@@ -162,8 +162,8 @@ def calculate_res(scene):
     else:
         bleed_inch = (scene.bleed_amount * 2) / 25.4
     
-    px_x = int((width_inch + bleed_inch) * scene.render_ppi)
-    px_y = int((height_inch + bleed_inch) * scene.render_ppi)
+    px_x = int(round((width_inch + bleed_inch) * scene.render_ppi))
+    px_y = int(round((height_inch + bleed_inch) * scene.render_ppi))
     return px_x, px_y
 
 # UI panel
