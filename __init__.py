@@ -22,7 +22,7 @@ UNIT_DATA = {
 #    'CM': 'cm',
 #    'INCH': 'inch',
 #    'BANANA': 'Banana',
-}
+#}
 PRESET_DATA = {
     'CUSTOM': ("Custom", (0.0, 0.0)),
     'SEP1': (" ", (0.0, 0.0)),
