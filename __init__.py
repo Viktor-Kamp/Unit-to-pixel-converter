@@ -17,12 +17,6 @@ UNIT_DATA = {
     'INCH': ("Inch", 1.0),
     'BANANA': ("Banana", 25.4 / 178.0),
 }
-#UNIT_LABELS = {
-#    'MM': 'mm',
-#    'CM': 'cm',
-#    'INCH': 'inch',
-#    'BANANA': 'Banana',
-#}
 PRESET_DATA = {
     'CUSTOM': ("Custom", (0.0, 0.0)),
     'SEP1': (" ", (0.0, 0.0)),
@@ -186,8 +180,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
-        #bleed_label = f"Bleed ({UNIT_LABELS[s.unit_selection]})"
-        col.prop(s, "bleed_amount", text=bleed_label)
+        col.prop(s, "bleed_amount")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
