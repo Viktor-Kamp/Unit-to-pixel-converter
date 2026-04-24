@@ -231,6 +231,3 @@ def unregister():
     del bpy.types.Scene.unit_height
     del bpy.types.Scene.bleed_amount
     del bpy.types.Scene.render_ppi
-    
-if __name__ == "__main__":
-    register()
