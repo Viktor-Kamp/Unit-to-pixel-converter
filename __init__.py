@@ -124,13 +124,13 @@ def update_preset_values(self, context):
         return
     
     self["_no_update"] = True
-try:    
+    try:    
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
-finally:    
+    finally:    
     self["_no_update"] = False
 
 # Converts input values, when unit is changed
