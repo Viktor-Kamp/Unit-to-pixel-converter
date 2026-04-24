@@ -125,13 +125,12 @@ def update_preset_values(self, context):
     
     self["_no_update"] = True
     try:    
-    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
-    target_factor = UNIT_DATA[self.unit_selection][1]
-    
-    self.unit_width = (width_mm / 25.4) * target_factor
-    self.unit_height = (height_mm / 25.4) * target_factor
+        width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
+        target_factor = UNIT_DATA[self.unit_selection][1]
+        self.unit_width = (width_mm / 25.4) * target_factor
+        self.unit_height = (height_mm / 25.4) * target_factor
     finally:    
-    self["_no_update"] = False
+        self["_no_update"] = False
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
@@ -146,7 +145,6 @@ def update_unit_conversion(self, context):
         try:
             self.unit_width = (self.unit_width / old_factor) * new_factor
             self.unit_height = (self.unit_height / old_factor) * new_factor
-        
             bleed_in_inch = self.bleed_amount / old_factor
             self.bleed_amount = bleed_in_inch * new_factor
         finally:        
