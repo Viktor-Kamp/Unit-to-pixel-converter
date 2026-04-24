@@ -49,7 +49,7 @@ PRESET_DATA = {
     'B10': ("DIN B10", (31.0, 44.0)),
     'SEP3': (" ", (0.0, 0.0)),
     
-    # DIN C (Envelops)
+    # DIN C (Envelopes)
     'C0': ("DIN C0", (917.0, 1297.0)),
     'C1': ("DIN C1", (648.0, 917.0)),
     'C2': ("DIN C2", (458.0, 648.0)),
@@ -96,6 +96,13 @@ PRESET_DATA = {
     'Business_Card_US': ("US Business card", (88.9, 50.8)),
 }
 
+UNIT_LABELS = {
+    'MM': 'mm',
+    'CM': 'cm',
+    'INCH': 'inch',
+    'BANANA': '🍌',
+}
+
 # Changes "Preset" to "Custom" if manually changed
 def update_to_custom(self, context):
     # Prevents an infinite loop whilst a preset is being loaded
@@ -118,13 +125,13 @@ def update_preset_values(self, context):
         return
     
     self["_no_update"] = True
-    
+try:    
     width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
     target_factor = UNIT_DATA[self.unit_selection][1]
     
     self.unit_width = (width_mm / 25.4) * target_factor
     self.unit_height = (height_mm / 25.4) * target_factor
-    
+finally:    
     self["_no_update"] = False
 
 # Converts input values, when unit is changed
@@ -137,17 +144,14 @@ def update_unit_conversion(self, context):
         new_factor = UNIT_DATA[new_unit][1]
         
         self["_no_update"] = True
-
-        self.unit_width = (self.unit_width / old_factor) * new_factor
-        self.unit_height = (self.unit_height / old_factor) * new_factor
+        try:
+            self.unit_width = (self.unit_width / old_factor) * new_factor
+            self.unit_height = (self.unit_height / old_factor) * new_factor
         
-        if old_unit == 'INCH' or new_unit == 'INCH':
-            if new_unit == 'INCH':
-                self.bleed_amount = self.bleed_amount / 25.4
-            else:
-                self.bleed_amount = self.bleed_amount * 25.4
-                
-        self["_no_update"] = False
+            bleed_in_inch = self.bleed_amount / old_factor
+            self.bleed_amount = bleed_in_inch * new_factor
+        finally:        
+            self["_no_update"] = False
         
     self["old_unit_selection"] = new_unit
 
@@ -186,7 +190,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
-        bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
+        bleed_label = f"Bleed ({UNIT_LABELS[s.unit_selection]})"
         col.prop(s, "bleed_amount", text=bleed_label)
         
         px_x, px_y = calculate_res(s)
