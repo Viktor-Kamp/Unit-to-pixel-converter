@@ -186,7 +186,6 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
-        col.separator()
         bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
         col.prop(s, "bleed_amount", text=bleed_label)
         
