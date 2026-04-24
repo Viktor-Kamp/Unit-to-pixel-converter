@@ -3,7 +3,7 @@ import bpy
 bl_info = {
     "name": "Unit to pixel converter",
     "author": "Viktor Kamp",
-    "version": (1, 3, 1),
+    "version": (1, 3, 2),
     "blender": (4, 2, 0),
     "location": "Properties > Output > Unit to pixel converter",
     "description": "Calculates render resolution from different measurement units, including inch, centimeter and millimeter while also taking PPI/DPI into account.",
@@ -49,7 +49,7 @@ PRESET_DATA = {
     'B10': ("DIN B10", (31.0, 44.0)),
     'SEP3': (" ", (0.0, 0.0)),
     
-    # DIN C (Envelops)
+    # DIN C (Envelopes)
     'C0': ("DIN C0", (917.0, 1297.0)),
     'C1': ("DIN C1", (648.0, 917.0)),
     'C2': ("DIN C2", (458.0, 648.0)),
@@ -118,14 +118,13 @@ def update_preset_values(self, context):
         return
     
     self["_no_update"] = True
-    
-    width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
-    target_factor = UNIT_DATA[self.unit_selection][1]
-    
-    self.unit_width = (width_mm / 25.4) * target_factor
-    self.unit_height = (height_mm / 25.4) * target_factor
-    
-    self["_no_update"] = False
+    try:    
+        width_mm, height_mm = PRESET_DATA[self.preset_selection][1]
+        target_factor = UNIT_DATA[self.unit_selection][1]
+        self.unit_width = (width_mm / 25.4) * target_factor
+        self.unit_height = (height_mm / 25.4) * target_factor
+    finally:    
+        self["_no_update"] = False
 
 # Converts input values, when unit is changed
 def update_unit_conversion(self, context):
@@ -137,17 +136,13 @@ def update_unit_conversion(self, context):
         new_factor = UNIT_DATA[new_unit][1]
         
         self["_no_update"] = True
-
-        self.unit_width = (self.unit_width / old_factor) * new_factor
-        self.unit_height = (self.unit_height / old_factor) * new_factor
-        
-        if old_unit == 'INCH' or new_unit == 'INCH':
-            if new_unit == 'INCH':
-                self.bleed_amount = self.bleed_amount / 25.4
-            else:
-                self.bleed_amount = self.bleed_amount * 25.4
-                
-        self["_no_update"] = False
+        try:
+            self.unit_width = (self.unit_width / old_factor) * new_factor
+            self.unit_height = (self.unit_height / old_factor) * new_factor
+            bleed_in_inch = self.bleed_amount / old_factor
+            self.bleed_amount = bleed_in_inch * new_factor
+        finally:        
+            self["_no_update"] = False
         
     self["old_unit_selection"] = new_unit
 
@@ -157,10 +152,7 @@ def calculate_res(scene):
     width_inch = scene.unit_width / factor
     height_inch = scene.unit_height / factor
     
-    if scene.unit_selection == 'INCH':
-        bleed_inch = scene.bleed_amount * 2
-    else:
-        bleed_inch = (scene.bleed_amount * 2) / 25.4
+    bleed_inch = (scene.bleed_amount / factor) * 2
     
     px_x = int(round((width_inch + bleed_inch) * scene.render_ppi))
     px_y = int(round((height_inch + bleed_inch) * scene.render_ppi))
@@ -176,8 +168,10 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.use_property_split = True
         s = context.scene
+        
+        layout.use_property_split = True
+        layout.use_property_decorate = False
 
         col = layout.column(align=True)
         col.prop(s, "preset_selection")
@@ -186,8 +180,7 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
         col.prop(s, "render_ppi")
-        bleed_label = "Bleed (inch)" if s.unit_selection == 'INCH' else "Bleed (mm)"
-        col.prop(s, "bleed_amount", text=bleed_label)
+        col.prop(s, "bleed_amount")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
@@ -221,13 +214,13 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
 
-    bpy.types.Scene.preset_selection = bpy.props.EnumProperty(name="Preset",items=[(k, v[0], "") for k, v in PRESET_DATA.items()], default='A4', update=update_preset_values)
-    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(name="Unit", items=[(k, v[0], "") for k, v in UNIT_DATA.items()], default='MM', update=update_unit_conversion)
+    bpy.types.Scene.preset_selection = bpy.props.EnumProperty(name="Preset",items=[(k, v[0], "") for k, v in PRESET_DATA.items()], default='A4', update=update_preset_values, options=set())
+    bpy.types.Scene.unit_selection = bpy.props.EnumProperty(name="Unit", items=[(k, v[0], "") for k, v in UNIT_DATA.items()], default='MM', update=update_unit_conversion, options=set())
 
-    bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom)
-    bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom)
-    bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1)
-    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=0.0, min=0.0)
+    bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom, options=set())
+    bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom, options=set())
+    bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1, options=set())
+    bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=0.0, min=0.0, options=set())
 
 def unregister():
     for cls in classes:
