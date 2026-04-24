@@ -17,6 +17,12 @@ UNIT_DATA = {
     'INCH': ("Inch", 1.0),
     'BANANA': ("Banana", 25.4 / 178.0),
 }
+UNIT_LABELS = {
+    'MM': 'mm',
+    'CM': 'cm',
+    'INCH': 'inch',
+    'BANANA': '🍌',
+}
 PRESET_DATA = {
     'CUSTOM': ("Custom", (0.0, 0.0)),
     'SEP1': (" ", (0.0, 0.0)),
@@ -96,13 +102,6 @@ PRESET_DATA = {
     'Business_Card_US': ("US Business card", (88.9, 50.8)),
 }
 
-UNIT_LABELS = {
-    'MM': 'mm',
-    'CM': 'cm',
-    'INCH': 'inch',
-    'BANANA': '🍌',
-}
-
 # Changes "Preset" to "Custom" if manually changed
 def update_to_custom(self, context):
     # Prevents an infinite loop whilst a preset is being loaded
@@ -161,10 +160,7 @@ def calculate_res(scene):
     width_inch = scene.unit_width / factor
     height_inch = scene.unit_height / factor
     
-    if scene.unit_selection == 'INCH':
-        bleed_inch = scene.bleed_amount * 2
-    else:
-        bleed_inch = (scene.bleed_amount * 2) / 25.4
+    bleed_inch = (scene.bleed_amount / factor) * 2
     
     px_x = int(round((width_inch + bleed_inch) * scene.render_ppi))
     px_y = int(round((height_inch + bleed_inch) * scene.render_ppi))
