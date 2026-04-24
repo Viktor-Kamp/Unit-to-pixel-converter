@@ -21,7 +21,7 @@ UNIT_LABELS = {
     'MM': 'mm',
     'CM': 'cm',
     'INCH': 'inch',
-    'BANANA': '🍌',
+    'BANANA': 'Banana',
 }
 PRESET_DATA = {
     'CUSTOM': ("Custom", (0.0, 0.0)),
