@@ -179,8 +179,8 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
         col.prop(s, "unit_selection")
         col.prop(s, "unit_width")
         col.prop(s, "unit_height")
-        col.prop(s, "render_ppi")
         col.prop(s, "bleed_amount")
+        col.prop(s, "render_ppi")
         
         px_x, px_y = calculate_res(s)
         box = layout.box()
@@ -219,8 +219,8 @@ def register():
 
     bpy.types.Scene.unit_width = bpy.props.FloatProperty(name="Width", default=210.0, min=0.001, update=update_to_custom, options=set())
     bpy.types.Scene.unit_height = bpy.props.FloatProperty(name="Height", default=297.0, min=0.001, update=update_to_custom, options=set())
-    bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1, options=set())
     bpy.types.Scene.bleed_amount = bpy.props.FloatProperty(name="Bleed", default=0.0, min=0.0, options=set())
+    bpy.types.Scene.render_ppi = bpy.props.IntProperty(name="PPI", default=300, min=1, options=set())
 
 def unregister():
     for cls in classes:
@@ -229,8 +229,8 @@ def unregister():
     del bpy.types.Scene.unit_selection
     del bpy.types.Scene.unit_width
     del bpy.types.Scene.unit_height
-    del bpy.types.Scene.render_ppi
     del bpy.types.Scene.bleed_amount
+    del bpy.types.Scene.render_ppi
     
 if __name__ == "__main__":
     register()
