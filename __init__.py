@@ -174,8 +174,10 @@ class RENDER_PT_unit_to_px(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.use_property_split = True
         s = context.scene
+        
+        layout.use_property_split = True
+        layout.use_property_decorate = False
 
         col = layout.column(align=True)
         col.prop(s, "preset_selection")
